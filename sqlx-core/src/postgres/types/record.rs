@@ -132,8 +132,7 @@ impl<'r> PgRecordDecoder<'r> {
                 }
 
                 let element_type =
-                    element_type_opt
-                        .ok_or_else(|| BoxDynError::from(format!("custom types in records are not fully supported yet: failed to retrieve type info for field {} with type oid {}", self.ind, element_type_oid.0)))?;
+                    element_type_opt.unwrap_or_else(|| PgTypeInfo::with_oid(element_type_oid));
 
                 self.ind += 1;
 
